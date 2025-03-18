@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f73;
+        }
+        .ascii-container {
+            text-align: left;
+            font-family: "Courier New", Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 30px;
+            color: #333;
+            width: 100%;
+            overflow-x: auto;
+            font-size: 16px; /* Default font size */
+            line-height: 1.2;
+            max-width: 100%;
+        }
+        .uploaded-image {
+            max-width: 100%;
+            height: auto;
+        }
+        .slider-container {
+            margin-top: 20px;
+        }
+        .slider-label {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the ASCII Art Generator!</h1>
+    <p>Upload an image and convert it to ASCII art.</p>
+
+    <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Convert to ASCII</button>
+    </form>
+
+    {% if uploaded_file_url %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_file_url }}" alt="Uploaded Image" class="uploaded-image">
+
+        <h2>Converted ASCII Art:</h2>
+        
+        <!-- Slider for adjusting font size -->
+        <div class="slider-container">
+            <label for="font-size-slider" class="slider-label">Adjust ASCII Art Size:</label>
+            <input type="range" id="font-size-slider" min="5" max="30" value="16" step="1">
+            <span id="font-size-value">16px</span>
+        </div>
+
+        <!-- Slider for adjusting ASCII art width -->
+        <div class="slider-container">
+            <label for="width-slider" class="slider-label">Adjust Width:</label>
+            <input type="range" id="width-slider" min="10" max="100" value="100" step="1">
+            <span id="width-value">100%</span>
+        </div>
+
+        <!-- Slider for adjusting ASCII art height -->
+        <div class="slider-container">
+            <label for="height-slider" class="slider-label">Adjust Height:</label>
+            <input type="range" id="height-slider" min="10" max="100" value="100" step="1">
+            <span id="height-value">100%</span>
+        </div>
+
+        <div class="ascii-container" id="ascii-container">
+            <pre>{{ ascii_art }}</pre>
+        </div>
+    {% endif %}
+
+    <script>
+        // JavaScript to update font size dynamically using the slider
+        const fontSizeSlider = document.getElementById("font-size-slider");
+        const asciiContainer = document.getElementById("ascii-container");
+        const fontSizeValue = document.getElementById("font-size-value");
+
+        fontSizeSlider.addEventListener("input", function() {
+            const newFontSize = fontSizeSlider.value + "px";
+            asciiContainer.style.fontSize = newFontSize;
+            fontSizeValue.textContent = newFontSize;
+        });
+
+        // JavaScript to update width dynamically using the slider
+        const widthSlider = document.getElementById("width-slider");
+        const widthValue = document.getElementById("width-value");
+
+        widthSlider.addEventListener("input", function() {
+            const newWidth = widthSlider.value + "%";
+            asciiContainer.style.width = newWidth;
+            widthValue.textContent = newWidth;
+        });
+
+        // JavaScript to update height dynamically using the slider
+        const heightSlider = document.getElementById("height-slider");
+        const heightValue = document.getElementById("height-value");
+
+        heightSlider.addEventListener("input", function() {
+            const newHeight = heightSlider.value + "%";
+            asciiContainer.style.height = newHeight;
+            heightValue.textContent = newHeight;
+        });
+    </script>
+</body>
+</html>
