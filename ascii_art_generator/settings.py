@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-!lob_cy-ij52+ovrq_%b5=@bff%r#a1l1w0$xug!97s(7g(hqb
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['Sasindu112.pythonanywhere.com']
+ALLOWED_HOSTS = ['Sasindu11.onrender.com']
 
 
 
